@@ -15,22 +15,74 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <time.h>
 
 using namespace std;
-
 
 //-----------------------------------------------------------------------------
 // Randomize the order of all items in the list
 //-----------------------------------------------------------------------------
-void randomize_list(string_vector & strings) {
-  // TODO: implement this function, then delete this comment
+void randomize_list(string_vector & strings) 
+{
+	srand(time(NULL));
+
+	for (int i = 0; i <= strings.size(); i++)
+	{
+		int r = rand() % strings.size()+1;
+		swap(strings[i], strings[r]);
+	}
+
   return;
 }
 
 //-----------------------------------------------------------------------------
-void merge(string_vector & strings, size_t start, size_t mid, size_t end) {
-  // TODO: implement this function, then delete this comment
-  return;
+void merge(string_vector & strings, size_t start, size_t mid, size_t end) 
+{
+	int i, j, k;
+	int n1 = mid - start + 1;
+	int n2 = end - mid;
+
+	string_vector left, right;
+
+	for (i = 0; i < n1; i++)
+		left[i] = strings[start + 1];
+	for (j = 0; j < n2; j++)
+		right[j] = strings[mid + 1 + j];
+
+
+	i = 0;
+	j = 0;
+	k = start;
+
+	while (i < n1 && j < n2)
+	{
+		if (left[i].compare(right[j]) <= 0)
+		{
+			strings[k] = left[i];
+			i++;
+		}
+		else
+		{
+			strings[k] = right[j];
+			j++;
+		}
+		k++;
+	}
+
+	while (i < n1)
+	{
+		strings[k] = left[i];
+		i++;
+		k++;
+	}
+
+	while (j < n2)
+	{
+		strings[k] = right[j];
+		j++;
+		k++;
+	}
+
 }
 
 //-----------------------------------------------------------------------------
@@ -39,8 +91,17 @@ void merge(string_vector & strings, size_t start, size_t mid, size_t end) {
 // parts, recursively calls itself on the two parts and then merges 
 // the two parts together using the merge() method.
 //-----------------------------------------------------------------------------
-void mergesort(string_vector & strings, size_t start, size_t end) {
-  // TODO: implement this function, then delete this comment
+void mergesort(string_vector & strings, size_t start, size_t end) 
+{
+	if (start < end)
+	{
+		int mid = start + (end - 1) / 2;
+
+		mergesort(strings, start, end);
+		mergesort(strings, mid + 1, end);
+
+		merge(strings, start, mid, end);
+	}
   return;
 }
 
@@ -50,8 +111,26 @@ void mergesort(string_vector & strings, size_t start, size_t end) {
 // and divides the list into less than and greater than the pivot value
 // It returns the index of the final position of the pivot value.
 //-----------------------------------------------------------------------------
-int hoare_partition(string_vector & strings, int start, int end) {
-  // TODO: implement this function, then delete this comment
+int hoare_partition(string_vector & strings, int start, int end) 
+{
+	string pivot = strings[start];
+	int i = start - 1;
+	int j = end + 1;
+	while (1)
+	{
+		do
+		{
+			i++;
+		} while (strings[i] < pivot);
+		do
+		{
+			j--;
+		} while (strings[j] > pivot);
+
+		if (i >= j)
+			return j;
+		swap(strings[i], strings[j]);
+	}
   return 0;
 }
 
@@ -61,8 +140,13 @@ int hoare_partition(string_vector & strings, int start, int end) {
 // parts, recursively calls itself on the two parts and then merges 
 // the two parts together using the merge() method.
 //-----------------------------------------------------------------------------
-void quicksort(string_vector & strings, int start, int end) {
-  // TODO: implement this function, then delete this comment
+void quicksort(string_vector & strings, int start, int end) 
+{
+	if (start >= end)
+		return;
+	int pivot = hoare_partition(strings, start, end);
+	quicksort(strings, start, end);
+	quicksort(strings, pivot + 1, end);
   return;
 }
 
