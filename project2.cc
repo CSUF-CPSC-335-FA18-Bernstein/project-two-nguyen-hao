@@ -42,10 +42,10 @@ void merge(string_vector & strings, size_t start, size_t mid, size_t end)
 	int n1 = mid - start + 1;
 	int n2 = end - mid;
 
-	string_vector left, right;
+	string_vector left(n1), right(n2);
 
 	for (i = 0; i < n1; i++)
-		left[i] = strings[start + 1];
+		left[i] = strings[start + i];
 	for (j = 0; j < n2; j++)
 		right[j] = strings[mid + 1 + j];
 
@@ -95,11 +95,10 @@ void mergesort(string_vector & strings, size_t start, size_t end)
 {
 	if (start < end)
 	{
-		int mid = start + (end - 1) / 2;
+		int mid = (start + end)/ 2;
 
-		mergesort(strings, start, end);
-		mergesort(strings, mid + 1, end);
-
+		mergesort(strings, start, mid);
+		mergesort(strings, mid+1, end);
 		merge(strings, start, mid, end);
 	}
   return;
@@ -116,22 +115,22 @@ int hoare_partition(string_vector & strings, int start, int end)
 	string pivot = strings[start];
 	int i = start - 1;
 	int j = end + 1;
-	while (1)
+	while (true)
 	{
 		do
 		{
 			i++;
-		} while (strings[i] < pivot);
+		} while (strings[i].size() < pivot.size());
 		do
 		{
 			j--;
-		} while (strings[j] > pivot);
+		} while (strings[j].size() > pivot.size());
 
 		if (i >= j)
 			return j;
 		swap(strings[i], strings[j]);
 	}
-  return 0;
+	return 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -142,12 +141,12 @@ int hoare_partition(string_vector & strings, int start, int end)
 //-----------------------------------------------------------------------------
 void quicksort(string_vector & strings, int start, int end) 
 {
-	if (start >= end)
+	if (end <= start)
 		return;
 	int pivot = hoare_partition(strings, start, end);
-	quicksort(strings, start, end);
+	quicksort(strings, start, pivot);
 	quicksort(strings, pivot + 1, end);
-  return;
+	return;
 }
 
 
