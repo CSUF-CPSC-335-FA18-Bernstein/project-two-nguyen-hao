@@ -26,9 +26,9 @@ void randomize_list(string_vector & strings)
 {
 	srand(time(NULL));
 
-	for (int i = 0; i <= strings.size(); i++)
+	for (int i = 0; i <= strings.size()-1; i++)
 	{
-		int r = rand() % strings.size()+1;
+		int r = rand() % (strings.size()-1);
 		swap(strings[i], strings[r]);
 	}
 
