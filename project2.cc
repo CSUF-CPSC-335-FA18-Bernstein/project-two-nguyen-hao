@@ -83,6 +83,28 @@ void merge(string_vector & strings, size_t start, size_t mid, size_t end)
 		k++;
 	}
 
+	/*
+	In place 
+	int left = start;
+	int right = mid+1;
+
+	if ( strings[mid].compare(strings[right]) < 0)
+		return;
+
+	while (left <= mid && right <= end)
+	{
+		if ( strings[left].compare(strings[right]) < 0)
+			left++;
+		else
+		{
+			string temp = strings[right];
+			swap(strings[i], strings[n-i-1];
+			strings[left] = temp;
+			left++; mid++; right++;
+		}
+	}
+	
+	*/
 }
 
 //-----------------------------------------------------------------------------
